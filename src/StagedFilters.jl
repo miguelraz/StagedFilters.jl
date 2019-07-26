@@ -2,7 +2,7 @@ module StagedFilters
 
 """
 Savitzky-Golay filter of window half-width M and degree
-N end # module M is the number of points before and after to interpolate, i.e. the full
+N. M is the number of points before and after to interpolate, i.e. the full
 width of the window is 2M+1.
 """
 abstract type AbstractStagedFilters end
@@ -16,14 +16,11 @@ smooth!(filter,data, smoothed) -
 apply `filter` to `data` writing result to `smoothed`.
 Note that feeding `Int`s and not floats as data will result in a performance slowdown.
 """
-@generated function smooth!(::Type{SavitzkyGolayFilter{M,N}}, data :: AbstractVector{T}, smoothed :: AbstractArray{S}) where {M,N,T,S}
+@generated function smooth!(::Type{SavitzkyGolayFilter{M,N}}, data :: AbstractArray{T}, smoothed :: AbstractArray{S}) where {M,N,T,S}
 
-  J = [(i - M - 1 )^(j - 1) for i = 1:2M + 1, j = 1:N + 1]
-  e₁ = [one(eltype(data)); zeros(eltype(data),N)]
+  J = T[(i - M - 1 )^(j - 1) for i = 1:2M + 1, j = 1:N + 1]
+  e₁ = [one(T); zeros(T,N)]
   C = J' \ e₁
-
-  eltype(data) <: AbstractFloat ? C = convert.(eltype(data), C) : nothing
-
   pre = :(for i = 1:$M end)
   main = :(for i = $(M + 1):n - $M end)
   post = :(for i = n - $(M - 1):n end)
@@ -32,7 +29,7 @@ Note that feeding `Int`s and not floats as data will result in a performance slo
       body = loop.args[2].args
 
       idx = loop !== pre ? :(i - $M) : :(wrapL(i - $M, n))   # Manually start the first iteration. See the "false" branch below.
-      push!(body, :( x = muladd($(C[1]), data[$idx], $(zero(eltype(C)))))) # Swap `muladd` instead of the additions. Note the index of 1.
+      push!(body, :( x = muladd($(C[1]), data[$idx], $(zero(T))))) # Swap `muladd` instead of the additions. Note the index of 1.
 
       for j = reverse(1:M-1) # Because we bumped out the first iteration, we have to reduce the for loop index by one.
           idx = loop !== pre ? :(i - $j) : :(wrapL(i - $j, n))
