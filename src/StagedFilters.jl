@@ -48,7 +48,7 @@ Note that feeding `Int`s and not floats as data will result in a performance slo
  last_expr = quote
           n = length(data)
           n == length(smoothed) || throw(DimensionMismatch())
-          @inbounds $pre; @inbounds @simd $main; @inbounds $post
+          @inbounds $pre; @inbounds  $main; @inbounds $post
           return smoothed
   end
 

@@ -1,4 +1,4 @@
-# StagedFilters
+# StagedFilters.jl - Lovingly handcrafted metaprogrammed code for all your DSP needs.
 
 This package implements a staged-programming approach for a highly specialized version of a Savitzky-Golay filter.
 
