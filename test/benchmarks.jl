@@ -24,4 +24,17 @@ x = PyObject(data);
 @btime smooth!(SavitzkyGolayFilter{2,2}, $data, $smoothed);
 @info "SciPy f64x$N"
 @btime pycall($savgol, PyObject, $x,5,2,mode="wrap");
-nothing;
+
+"""
+In [17]: import scipy.signal
+
+In [18]: data = [i / 1.0 for i in range(1000000)]
+
+In [19]: f = scipy.signal.savgol_filter
+
+In [20]: %%timeit
+    ...: f(data, 5, 2, mode="wrap")
+        ...:
+            ...:
+            58 ms ± 257 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+"""

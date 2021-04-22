@@ -5,14 +5,14 @@ using BenchmarkTools;
 
 
 @testset "StagedFilters.jl" begin
-    N = 1000
+    N = 1_000_000
     data = convert.(Float64, collect(range(1, N , length = N))); 
     smoothed = zeros(eltype(data), length(data)); # <--- wholesome, type stable code.
     savgol = pyimport("scipy.signal")."savgol_filter";
     x = PyObject(data);
 
     @info "Julia Float64"
-    benchjl64 = @btime smooth!(SavitzkyGolayFilter{2,2}, data, smoothed);
+    benchjl64 = @btime smooth!(SavitzkyGolayFilter{2,2}, $data, $smoothed);
 
     @info "Python Float64"
     benchpy64 = @btime $savgol($x,5,2,mode="wrap");
@@ -22,10 +22,10 @@ using BenchmarkTools;
     #savgol = pyimport("scipy.signal")."savgol_filter";
     x = PyObject(data);
 
-    @info "Julia Float64"
-    benchjl32 = @btime smooth!(SavitzkyGolayFilter{2,2}, data, smoothed);
+    @info "Julia Float32"
+    benchjl32 = @btime smooth!(SavitzkyGolayFilter{2,2}, $data, $smoothed);
 
-    @info "Python Float64"
+    @info "Python Float32"
     benchpy32 = @btime $savgol($x,5,2,mode="wrap");
 
     @test benchpy64 ≈ benchjl64

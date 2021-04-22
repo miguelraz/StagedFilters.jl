@@ -1,5 +1,7 @@
 module StagedFilters
 
+using LoopVectorization
+
 """
 Savitzky-Golay filter of window half-width M and degree
 N. M is the number of points before and after to interpolate, i.e. the full
@@ -48,7 +50,7 @@ Note that feeding `Int`s and not floats as data will result in a performance slo
  last_expr = quote
           n = length(data)
           n == length(smoothed) || throw(DimensionMismatch())
-          @inbounds $pre; @inbounds  $main; @inbounds $post
+          @inbounds $pre; @avxt $main; @inbounds $post
           return smoothed
   end
 
