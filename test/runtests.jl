@@ -5,7 +5,7 @@ using BenchmarkTools;
 
 
 @testset "StagedFilters.jl" begin
-    N = 1_000_000
+    N = 100_000_000
     data = convert.(Float64, collect(range(1, N , length = N))); 
     smoothed = zeros(eltype(data), length(data)); # <--- wholesome, type stable code.
     savgol = pyimport("scipy.signal")."savgol_filter";
