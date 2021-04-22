@@ -19,7 +19,10 @@ apply `filter` to `data` writing result to `smoothed`.
 Note that feeding `Int`s and not floats as data will result in a performance slowdown.
 """
 @generated function smooth!(::Type{SavitzkyGolayFilter{M,N}}, data :: AbstractArray{T}, smoothed :: AbstractArray{S}) where {M,N,T,S}
-
+  smooth_builder(T, M, N, false)
+end
+# separated for easier viewing of generated code
+function smooth_builder(::Type{T}, M::Int, N::Int, strip::Bool=true) where {T}
   J = T[(i - M - 1 )^(j - 1) for i = 1:2M + 1, j = 1:N + 1]
   e₁ = [one(T); zeros(T,N)]
   C = J' \ e₁
@@ -54,7 +57,7 @@ Note that feeding `Int`s and not floats as data will result in a performance slo
           return smoothed
   end
 
-  return last_expr = Base.remove_linenums!(last_expr)
+  return last_expr = strip ? Base.remove_linenums!(last_expr) : last_expr
 end;
 
 export SavitzkyGolayFilter, smooth!
