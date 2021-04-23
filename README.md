@@ -2,7 +2,7 @@
 
 This package implements a staged-programming approach for a highly specialized version of a Savitzky-Golay filter. It is a **generalized, performant algorithm** of [rolling/moving functions](https://en.wikipedia.org/wiki/Moving_average), such as a `rolling/moving average`.
 
-If you would like to read a full blog post on the implementation on it, [you can find some here](https://miguelraz.github.io/blog/).
+If you would like to read a full blog post on the implementation on it, [you can find some here](https://miguelraz.github.io/blog/smoothingjiahao/).
 For a video explanation by Stefan Karpinski, check out the [following video](https://www.youtube.com/watch?v=DRKKAFYM9yo&feature=youtu.be&t=2047)
 
 ### Acknowledgments
