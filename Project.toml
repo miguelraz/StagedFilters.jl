@@ -1,7 +1,7 @@
 name = "StagedFilters"
 uuid = "c9c6d8d2-eaa5-11e8-3089-811798346984"
 authors = ["miguel raz <miguelraz@ciencias.unam.mx>"]
-version = "0.1.0"
+version = "0.1.5"
 
 [deps]
 Chairmarks = "0ca39b1e-fe0b-4e98-acfc-b1656634c4de"
