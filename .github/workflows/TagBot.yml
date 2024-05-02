@@ -31,3 +31,6 @@ jobs:
           # Edit the following line to reflect the actual name of the GitHub Secret containing your private key
           ssh: ${{ secrets.DOCUMENTER_KEY }}
           # ssh: ${{ secrets.NAME_OF_MY_SSH_PRIVATE_KEY_SECRET }}
+- name: Julia TagBot
+uses: JuliaRegistries/TagBot@v1.18.1
+            
